@@ -1,0 +1,176 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+string coder(string input, unsigned char alpha[]);
+string decoder(string input, unsigned char alpha[]);
+void duplicateNumbers(int& a, int& b, int& c, int& d);
+
+int main()
+{
+    string input;
+    int choice;
+    int x;
+    cout << "Enter 4-digit key:  ";
+    cin >> x;
+
+    int a = x / 1000;
+    int b = x / 100 % 10;		//break down 4 digits into 4 indiviual numbers
+    int c = x / 10 % 100 % 10;
+    int d = x % 100 % 10;
+
+    if(a==b || a==c || a==d || b==c || b==d || c==d){
+        duplicateNumbers(a,b,c,d);			//if there are duplicate numbers then funciton will change numbers in a semi-randomized process
+    }
+
+    unsigned char alpha[] = {125-b,85-c,115-c,75-a,105-d,95-a,65-c,55-c,85-d,115-b,75-d,105-a,95-c,65-b,125-c,85-a,115-d,75-c,55-b,95-d,
+                             65-a,125-d,85-b,115-a,75-b,105-c,95-b,65-d,55-a,125-a};
+    //30 characters will be generated based on values for a, b, c, d 
+    //the reason for changing equal digits is because within the array some elements have the same 9-character scope (ex. first element and last)
+    //	  therefore when encrypting certain inputs would be assigned to the same character
+    //future note: figure out a way to possibly 
+
+    cout << "Enter text:  ";
+    getline(cin, input);
+    getline(cin, input);
+    cout << "Enter 1 for encrypter, 2 for decypter:  ";
+    cin >> choice;
+
+    if(choice==1){
+        cout << "Encrypted message:  " << coder(input,alpha) << endl;
+    } else {
+        cout << "Decrypted message:  " << decoder(input,alpha) << endl;
+    }
+
+    return 0;
+}
+
+void duplicateNumbers(int& a, int& b, int& c, int& d){
+    //no defined logic for changing values, simply incremented/decremented values at random while being careful not to end up with duplicate numbers
+    //for any 4 digit case where 2 or more individual digits equal eachother, this function will create a new 4 digit pin with no digits equalling eachother
+
+    if (a==b){
+        if (b<9){b++;} //if any digits are below 9 then it is safe to increment
+        else {b--;} //in the event that digit is 9 then incrementing will result in a 10, which is two digits, therefore decrement
+    }
+    if (a==c){
+        if (c<9){c++;}
+        else {c--;}
+    }
+    if (a==d){
+        if (d<9){d++;}
+        else {d--;}
+    }
+    if (b==c){
+        if (c<9){
+            c++;
+            if (a==c){c = c - 4;}
+            if (c<0){c = -c;}
+        } else {
+            c--;
+            if (a==c){c--;}
+        }
+    }
+    if (b==d){
+        if (d<9){
+            d++;
+            if (a==d){d = d - 2;}
+        } else {
+            d--;
+            if (a==d){d = d - 2;}
+        }
+    }
+    if (c==d){
+        if (d<9){
+            d++;
+            if (a==d){d = d - 5;}
+            if (d < 0){d = -d;}
+        } else {
+            d--;
+            if (a==d){d = d-3;}
+        }
+    }
+    if (b==d){
+        if (d<9){d = d + 2;}
+        else {d--;}
+    }
+    if (d==10){d=1;}
+}
+
+string coder(string input,unsigned char alpha[]){
+    //function will flush through input string, assigning particular elements to characters (elements were defined by 4 -digit pin)
+
+    string output (input.length(), 35); //output will be defined as a bunch of #'s (ASCII code 35) corresponding to input length
+
+    for(int i=0; i<input.length(); i++){
+        if(input.at(i) == ' '){output.at(i) = alpha[0];}
+        if(input.at(i) == 'a'){output.at(i) = alpha[1];}
+        if(input.at(i) == 'b'){output.at(i) = alpha[2];}
+        if(input.at(i) == 'c'){output.at(i) = alpha[3];}
+        if(input.at(i) == 'd'){output.at(i) = alpha[4];}
+        if(input.at(i) == 'e'){output.at(i) = alpha[15];}
+        if(input.at(i) == 'f'){output.at(i) = alpha[6];}
+        if(input.at(i) == 'g'){output.at(i) = alpha[7];}
+        if(input.at(i) == 'h'){output.at(i) = alpha[21];}
+        if(input.at(i) == 'i'){output.at(i) = alpha[9];}
+        if(input.at(i) == 'j'){output.at(i) = alpha[10];}
+        if(input.at(i) == 'k'){output.at(i) = alpha[11];}
+        if(input.at(i) == 'l'){output.at(i) = alpha[12];}
+        if(input.at(i) == 'm'){output.at(i) = alpha[13];}
+        if(input.at(i) == 'n'){output.at(i) = alpha[14];}
+        if(input.at(i) == 'o'){output.at(i) = alpha[5];}
+        if(input.at(i) == 'p'){output.at(i) = alpha[16];}
+        if(input.at(i) == 'q'){output.at(i) = alpha[17];}
+        if(input.at(i) == 'r'){output.at(i) = alpha[18];}
+        if(input.at(i) == 's'){output.at(i) = alpha[19];}
+        if(input.at(i) == 't'){output.at(i) = alpha[20];}
+        if(input.at(i) == 'u'){output.at(i) = alpha[8];}
+        if(input.at(i) == 'v'){output.at(i) = alpha[22];}
+        if(input.at(i) == 'w'){output.at(i) = alpha[23];}
+        if(input.at(i) == 'x'){output.at(i) = alpha[24];}
+        if(input.at(i) == 'y'){output.at(i) = alpha[25];}
+        if(input.at(i) == 'z'){output.at(i) = alpha[26];}
+        if(input.at(i) == '.'){output.at(i) = alpha[27];}
+        if(input.at(i) == '?'){output.at(i) = alpha[28];}
+        if(input.at(i) == ','){output.at(i) = alpha[29];}
+    }
+    return output; //function will return encrypted message
+}
+
+string decoder(string input,unsigned char alpha[]){
+    string output (input.length(), 35); //output will be defined as a bunch of #'s (ASCII code 35) corresponding to input length
+
+    for(int i=0; i<input.length(); i++){
+        if(input.at(i) == alpha[0]){output.at(i) = ' ';}
+        if(input.at(i) == alpha[1]){output.at(i) = 'a';}
+        if(input.at(i) == alpha[2]){output.at(i) = 'b';}
+        if(input.at(i) == alpha[3]){output.at(i) = 'c';}
+        if(input.at(i) == alpha[4]){output.at(i) = 'd';}
+        if(input.at(i) == alpha[15]){output.at(i) = 'e';}
+        if(input.at(i) == alpha[6]){output.at(i) = 'f';}
+        if(input.at(i) == alpha[7]){output.at(i) = 'g';}
+        if(input.at(i) == alpha[21]){output.at(i) = 'h';}
+        if(input.at(i) == alpha[9]){output.at(i) = 'i';}
+        if(input.at(i) == alpha[10]){output.at(i) = 'j';}
+        if(input.at(i) == alpha[11]){output.at(i) = 'k';}
+        if(input.at(i) == alpha[12]){output.at(i) = 'l';}
+        if(input.at(i) == alpha[13]){output.at(i) = 'm';}
+        if(input.at(i) == alpha[14]){output.at(i) = 'n';}
+        if(input.at(i) == alpha[5]){output.at(i) = 'o';}
+        if(input.at(i) == alpha[16]){output.at(i) = 'p';}
+        if(input.at(i) == alpha[17]){output.at(i) = 'q';}
+        if(input.at(i) == alpha[18]){output.at(i) = 'r';}
+        if(input.at(i) == alpha[19]){output.at(i) = 's';}
+        if(input.at(i) == alpha[20]){output.at(i) = 't';}
+        if(input.at(i) == alpha[8]){output.at(i) = 'u';}
+        if(input.at(i) == alpha[22]){output.at(i) = 'v';}
+        if(input.at(i) == alpha[23]){output.at(i) = 'w';}
+        if(input.at(i) == alpha[24]){output.at(i) = 'x';}
+        if(input.at(i) == alpha[25]){output.at(i) = 'y';}
+        if(input.at(i) == alpha[26]){output.at(i) = 'z';}
+        if(input.at(i) == alpha[27]){output.at(i) = '.';}
+        if(input.at(i) == alpha[28]){output.at(i) = '?';}
+        if(input.at(i) == alpha[29]){output.at(i) = ',';}
+    }
+    return output; //function will return a decrypted message if the 4 digit pin was the same as the encyrption one
+}
